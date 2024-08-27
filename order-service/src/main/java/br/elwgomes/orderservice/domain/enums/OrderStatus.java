@@ -1,7 +1,7 @@
 package br.elwgomes.orderservice.domain.enums;
 
 public enum OrderStatus {
-  WAITING_PAYMENT(1),
+  PENDING(1),
   PAID(2),
   PACKING(3),
   SHIPPED(4),

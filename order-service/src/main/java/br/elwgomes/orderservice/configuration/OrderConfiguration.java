@@ -10,6 +10,7 @@ public class OrderConfiguration {
 
   private static final Logger LOG = LoggerFactory.getLogger(OrderConfiguration.class);
 
+  // @Bean
   CommandLineRunner commandLineRunner() {
     return args -> {
       LOG.info("Command Line Runner");
