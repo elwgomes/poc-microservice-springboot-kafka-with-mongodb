@@ -18,9 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.elwgomes.orderservice.domain.Order;
 import br.elwgomes.orderservice.domain.Product;
+import br.elwgomes.orderservice.domain.Stock;
 import br.elwgomes.orderservice.domain.enums.OrderStatus;
+import br.elwgomes.orderservice.domain.enums.StockDisponibility;
 import br.elwgomes.orderservice.repository.OrderMongoRepository;
 import br.elwgomes.orderservice.repository.ProductMongoRepository;
+import br.elwgomes.orderservice.repository.StockMongoRepository;
 
 @Service
 @Primary
@@ -33,12 +36,15 @@ public class OrderFactoryService {
   private static final Logger LOG = LoggerFactory.getLogger(OrderFactoryService.class);
   private final OrderMongoRepository orderRepository;
   private final ProductMongoRepository productRepository;
+  private final StockMongoRepository stockRepository;
   private final KafkaTemplate<String, Order> kafkaTemplate;
 
   public OrderFactoryService(OrderMongoRepository orderRepository, ProductMongoRepository productRepository,
+      StockMongoRepository stockRepository,
       KafkaTemplate<String, Order> kafkaTemplate) {
     this.orderRepository = orderRepository;
     this.productRepository = productRepository;
+    this.stockRepository = stockRepository;
     this.kafkaTemplate = kafkaTemplate;
   }
 
@@ -65,9 +71,14 @@ public class OrderFactoryService {
     for (int j = 0; j < quantityProducts; j++) {
       Product product = new Product(randomId(), RANDOM.nextInt(3) + 1);
       items.add(product);
+      stockRepository.save(generateStock(product.getId()));
       productRepository.save(product);
     }
     return items;
+  }
+
+  protected Stock generateStock(String productId) {
+    return new Stock(randomId(), productId, randomDisponibility());
   }
 
   protected String randomId() {
@@ -79,10 +90,14 @@ public class OrderFactoryService {
     return statuses[RANDOM.nextInt(statuses.length)];
   }
 
+  protected StockDisponibility randomDisponibility() {
+    StockDisponibility[] disponibilities = StockDisponibility.values();
+    return disponibilities[RANDOM.nextInt(disponibilities.length)];
+  }
+
   protected Instant randomInstant() {
     return Instant.now().minus(RANDOM.nextInt(30), ChronoUnit.DAYS)
         .minus(RANDOM.nextInt(24), ChronoUnit.HOURS)
         .minus(RANDOM.nextInt(60), ChronoUnit.MINUTES);
   }
-
 }
