@@ -7,6 +7,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -24,10 +26,11 @@ import br.elwgomes.orderservice.repository.ProductMongoRepository;
 @Primary
 public class OrderFactoryService {
 
-  @Value("${topics.order.request.topic}")
+  @Value("${kafka.topics.orders}")
   private String orderTopic;
 
   protected Random RANDOM = new Random();
+  private static final Logger LOG = LoggerFactory.getLogger(OrderFactoryService.class);
   private final OrderMongoRepository orderRepository;
   private final ProductMongoRepository productRepository;
   private final KafkaTemplate<String, Order> kafkaTemplate;
@@ -52,9 +55,9 @@ public class OrderFactoryService {
       boolean needPayment = (order.getStatus() == OrderStatus.PENDING);
       if (needPayment) {
         kafkaTemplate.send(orderTopic, order.getId(), order);
+        LOG.info("Sent: { }");
       }
     }
-
   }
 
   protected Set<Product> generateItems(int quantityProducts) {

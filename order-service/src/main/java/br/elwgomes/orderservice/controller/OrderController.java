@@ -2,7 +2,6 @@ package br.elwgomes.orderservice.controller;
 
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.elwgomes.orderservice.controller.response.ErrorHttpResponse;
 import br.elwgomes.orderservice.controller.response.OrderHttpResponse;
 import br.elwgomes.orderservice.domain.Order;
-import br.elwgomes.orderservice.exceptions.InvalidParameterException;
+import br.elwgomes.orderservice.domain.exceptions.InvalidParameterException;
 import br.elwgomes.orderservice.repository.OrderMongoRepository;
 import br.elwgomes.orderservice.service.OrderFactoryService;
 
