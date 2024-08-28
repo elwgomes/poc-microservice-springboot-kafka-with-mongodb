@@ -2,26 +2,33 @@ package br.elwgomes.orderservice.controller;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.elwgomes.orderservice.controller.response.ErrorHttpResponse;
+import br.elwgomes.orderservice.controller.response.OrderHttpResponse;
 import br.elwgomes.orderservice.domain.Order;
+import br.elwgomes.orderservice.exceptions.InvalidParameterException;
 import br.elwgomes.orderservice.repository.OrderMongoRepository;
-import br.elwgomes.orderservice.service.OrderGenerator;
+import br.elwgomes.orderservice.service.OrderFactoryService;
 
 @RestController
 @RequestMapping("orders")
 public class OrderController {
 
   private final OrderMongoRepository repository;
-  private final OrderGenerator generator;
+  private final OrderFactoryService factory;
 
-  public OrderController(OrderMongoRepository repository, OrderGenerator generator) {
+  public OrderController(OrderMongoRepository repository, OrderFactoryService factory) {
     this.repository = repository;
-    this.generator = generator;
+    this.factory = factory;
   }
 
   @PostMapping
@@ -30,8 +37,14 @@ public class OrderController {
   }
 
   @PostMapping("generate")
-  public void generate() {
-    generator.generate();
+  public ResponseEntity<OrderHttpResponse> generateOrders(@RequestParam Integer quantity) {
+    boolean isQuantityValid = (quantity > 0);
+    if (!isQuantityValid) {
+      throw new InvalidParameterException("You must generate one or more orders.");
+    }
+    factory.execute(quantity);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(new OrderHttpResponse(HttpStatus.CREATED, quantity + " orders has been generated."));
   }
 
   @GetMapping
