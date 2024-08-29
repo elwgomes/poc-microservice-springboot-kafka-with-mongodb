@@ -1,34 +1,14 @@
 package br.elwgomes.orderservice.controller.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ErrorHttpResponse {
   private HttpStatus status;
   private String error;
-
-  public ErrorHttpResponse() {
-
-  }
-
-  public ErrorHttpResponse(HttpStatus status, String error) {
-    this.status = status;
-    this.error = error;
-  }
-
-  public HttpStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(HttpStatus status) {
-    this.status = status;
-  }
-
-  public String getError() {
-    return error;
-  }
-
-  public void setError(String error) {
-    this.error = error;
-  }
-
 }

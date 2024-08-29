@@ -19,7 +19,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import br.elwgomes.orderservice.domain.Order;
+import br.com.elwgomes.base.domain.Order;
 
 @SpringBootApplication
 public class OrderServiceApplication {
@@ -46,7 +46,7 @@ public class OrderServiceApplication {
   @Bean
   public CommandLineRunner commandLineRunner() {
     return args -> {
-
+      LOG.info("COMMAND LINE RUNNER: {}");
     };
   }
 

@@ -1,4 +1,4 @@
-package br.elwgomes.orderservice.domain.exceptions;
+package br.elwgomes.orderservice.exceptions;
 
 public class InvalidParameterException extends RuntimeException {
   public InvalidParameterException(String message) {

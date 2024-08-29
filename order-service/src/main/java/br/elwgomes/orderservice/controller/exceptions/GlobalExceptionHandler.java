@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.elwgomes.orderservice.controller.response.ErrorHttpResponse;
-import br.elwgomes.orderservice.domain.exceptions.InvalidParameterException;
+import br.elwgomes.orderservice.exceptions.InvalidParameterException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

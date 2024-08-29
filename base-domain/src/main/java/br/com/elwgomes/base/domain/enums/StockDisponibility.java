@@ -1,19 +1,16 @@
-package br.elwgomes.stockservice.domain.enums;
+package br.com.elwgomes.base.domain.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public enum StockDisponibility {
 
   UNAVAILABLE(1),
   AVAILABLE(2);
 
   private int code;
-
-  private StockDisponibility(int code) {
-    this.code = code;
-  }
-
-  public int getCode() {
-    return code;
-  }
 
   public static StockDisponibility valueOf(int code) {
     for (StockDisponibility value : StockDisponibility.values()) {

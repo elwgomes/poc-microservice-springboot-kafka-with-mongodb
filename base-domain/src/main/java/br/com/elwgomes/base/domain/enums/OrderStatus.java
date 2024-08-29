@@ -1,4 +1,4 @@
-package br.elwgomes.orderservice.domain.enums;
+package br.com.elwgomes.base.domain.enums;
 
 public enum OrderStatus {
   PENDING(1),

@@ -1,9 +1,11 @@
-package br.elwgomes.orderservice.repository;
+package br.elwgomes.stockservice.repository;
 
-import br.com.elwgomes.base.domain.Order;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import br.com.elwgomes.base.domain.Order;
+
 @Repository
 public interface OrderMongoRepository extends MongoRepository<Order, String> {
+
 }

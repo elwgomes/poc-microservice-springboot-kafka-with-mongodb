@@ -7,6 +7,11 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import br.com.elwgomes.base.domain.Order;
+import br.com.elwgomes.base.domain.Product;
+import br.com.elwgomes.base.domain.Stock;
+import br.com.elwgomes.base.domain.enums.OrderStatus;
+import br.com.elwgomes.base.domain.enums.StockDisponibility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,11 +21,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.elwgomes.orderservice.domain.Order;
-import br.elwgomes.orderservice.domain.Product;
-import br.elwgomes.orderservice.domain.Stock;
-import br.elwgomes.orderservice.domain.enums.OrderStatus;
-import br.elwgomes.orderservice.domain.enums.StockDisponibility;
 import br.elwgomes.orderservice.repository.OrderMongoRepository;
 import br.elwgomes.orderservice.repository.ProductMongoRepository;
 import br.elwgomes.orderservice.repository.StockMongoRepository;

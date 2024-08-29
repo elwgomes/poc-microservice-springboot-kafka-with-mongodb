@@ -14,7 +14,7 @@ public class StockConfiguration {
   @Bean
   CommandLineRunner commandLineRunner() {
     return args -> {
-      LOG.info("Command Line Runner");
+      LOG.info("COMMAND LINE RUNNER: {}");
     };
   }
 
