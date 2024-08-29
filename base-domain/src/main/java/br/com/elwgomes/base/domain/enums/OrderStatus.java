@@ -1,12 +1,10 @@
 package br.com.elwgomes.base.domain.enums;
 
 public enum OrderStatus {
-  PENDING(1),
-  PAID(2),
+  CANCELED(1),
+  PENDING(2),
   PACKING(3),
-  SHIPPED(4),
-  DELIVERED(5),
-  CANCELED(6);
+  PAID(4);
 
   private int code;
 

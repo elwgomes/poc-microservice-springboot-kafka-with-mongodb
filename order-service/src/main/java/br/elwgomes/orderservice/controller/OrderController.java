@@ -3,6 +3,7 @@ package br.elwgomes.orderservice.controller;
 import java.util.List;
 
 import br.com.elwgomes.base.domain.Order;
+import br.com.elwgomes.base.domain.exceptions.InvalidParameterException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.elwgomes.orderservice.controller.response.OrderHttpResponse;
-import br.elwgomes.orderservice.exceptions.InvalidParameterException;
 import br.elwgomes.orderservice.repository.OrderMongoRepository;
 import br.elwgomes.orderservice.service.OrderFactoryService;
 

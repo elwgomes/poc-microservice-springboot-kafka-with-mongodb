@@ -8,7 +8,11 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.elwgomes.base.domain.Order;
 import br.com.elwgomes.base.domain.Product;
@@ -17,19 +21,28 @@ import br.com.elwgomes.base.domain.enums.OrderStatus;
 import br.com.elwgomes.base.domain.enums.StockDisponibility;
 import br.elwgomes.stockservice.repository.OrderMongoRepository;
 import br.elwgomes.stockservice.repository.StockMongoRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
 public class OrderManagerService {
   private static final Logger LOG = LoggerFactory.getLogger(OrderManagerService.class);
 
+  @Value("${kafka.topics.stock}")
+  private String stockTopic;
+
   private final OrderMongoRepository orderRepository;
   private final StockMongoRepository stockRepository;
+  private final KafkaTemplate<String, Order> kafkaTemplate;
 
-  public OrderManagerService(OrderMongoRepository orderRepository, StockMongoRepository stockRepository) {
+  public OrderManagerService(OrderMongoRepository orderRepository, StockMongoRepository stockRepository,
+      KafkaTemplate<String, Order> kafkaTemplate) {
     this.orderRepository = orderRepository;
     this.stockRepository = stockRepository;
+    this.kafkaTemplate = kafkaTemplate;
   }
 
+  @Async
+  @Transactional
   public void process(Order order) {
     Set<Product> unavailableProducts = order.getItems().stream()
         .filter(product -> {
@@ -50,6 +63,7 @@ public class OrderManagerService {
     }
 
     packOrder(order);
+    kafkaTemplate.send(stockTopic, order.getId(), order);
   }
 
   private void cancelOrder(Order order) {
