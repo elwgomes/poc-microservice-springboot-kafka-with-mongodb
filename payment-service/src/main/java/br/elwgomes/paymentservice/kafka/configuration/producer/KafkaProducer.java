@@ -20,20 +20,8 @@ import br.com.elwgomes.base.domain.Order;
 @Configuration
 public class KafkaProducer {
 
-  @Value("${kafka.topics.payment}")
-  private String paymentTopic;
-
   @Value("${spring.kafka.bootstrap-servers}")
   private String bootstrapServers;
-
-  @Bean
-  public NewTopic paymentTopic() {
-    return TopicBuilder
-        .name(paymentTopic)
-        .partitions(1)
-        .compact()
-        .build();
-  }
 
   @Bean
   public Map<String, Object> kafkaProducerProps() {
