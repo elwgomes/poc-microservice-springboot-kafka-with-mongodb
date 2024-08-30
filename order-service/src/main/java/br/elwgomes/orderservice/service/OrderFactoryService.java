@@ -7,11 +7,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import br.com.elwgomes.base.domain.Order;
-import br.com.elwgomes.base.domain.Product;
-import br.com.elwgomes.base.domain.Stock;
-import br.com.elwgomes.base.domain.enums.OrderStatus;
-import br.com.elwgomes.base.domain.enums.StockDisponibility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,9 +16,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.elwgomes.base.domain.Order;
+import br.com.elwgomes.base.domain.Product;
+import br.com.elwgomes.base.domain.enums.OrderStatus;
+import br.com.elwgomes.base.domain.enums.StockDisponibility;
 import br.elwgomes.orderservice.repository.OrderMongoRepository;
 import br.elwgomes.orderservice.repository.ProductMongoRepository;
-import br.elwgomes.orderservice.repository.StockMongoRepository;
 
 @Service
 @Primary
@@ -36,15 +34,12 @@ public class OrderFactoryService {
   private static final Logger LOG = LoggerFactory.getLogger(OrderFactoryService.class);
   private final OrderMongoRepository orderRepository;
   private final ProductMongoRepository productRepository;
-  private final StockMongoRepository stockRepository;
   private final KafkaTemplate<String, Order> kafkaTemplate;
 
   public OrderFactoryService(OrderMongoRepository orderRepository, ProductMongoRepository productRepository,
-      StockMongoRepository stockRepository,
       KafkaTemplate<String, Order> kafkaTemplate) {
     this.orderRepository = orderRepository;
     this.productRepository = productRepository;
-    this.stockRepository = stockRepository;
     this.kafkaTemplate = kafkaTemplate;
   }
 
@@ -69,16 +64,11 @@ public class OrderFactoryService {
   protected Set<Product> generateItems(int quantityProducts) {
     Set<Product> items = new HashSet<>();
     for (int j = 0; j < quantityProducts; j++) {
-      Product product = new Product(randomId(), RANDOM.nextInt(3) + 1);
+      Product product = new Product(randomId(), RANDOM.nextInt(3) + 1, randomDisponibility());
       items.add(product);
-      stockRepository.save(generateStock(product.getId()));
       productRepository.save(product);
     }
     return items;
-  }
-
-  protected Stock generateStock(String productId) {
-    return new Stock(randomId(), productId, randomDisponibility());
   }
 
   protected String randomId() {

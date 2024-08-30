@@ -1,4 +1,4 @@
-package br.elwgomes.paymentservice.kafka.configuration.consumer;
+package br.elwgomes.paymentservice.kafka.configuration.producer;
 
 import java.util.HashMap;
 import java.util.Map;

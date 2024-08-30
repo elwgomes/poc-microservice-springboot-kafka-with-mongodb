@@ -1,4 +1,4 @@
-package br.elwgomes.stockservice.kafka.configuration.consumer;
+package br.elwgomes.paymentservice.kafka.configuration.consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.com.elwgomes.base.domain.Order;
-import br.elwgomes.stockservice.service.OrderManagerService;
+import br.elwgomes.paymentservice.service.OrderManagerService;
 
 @Configuration
 @EnableKafka
@@ -23,8 +23,8 @@ public class KafkaConsumer {
   @Autowired
   private OrderManagerService service;
 
-  @KafkaListener(topics = "${kafka.topics.orders}", groupId = "${kafka.consumers.stock.group-id}")
-  public void orderConsumer(String message) {
+  @KafkaListener(topics = "${kafka.topics.stock}", groupId = "${kafka.consumers.payment.group-id}")
+  public void consumer(String message) {
     ObjectMapper objMapper = new ObjectMapper();
     objMapper.registerModule(new JavaTimeModule());
     try {
@@ -33,7 +33,8 @@ public class KafkaConsumer {
       service.process(order);
     } catch (JsonProcessingException e) {
       LOG.error("Error deserializing message: {}", message, e);
+
     }
-    LOG.info("Consumed: {}");
   }
+
 }
